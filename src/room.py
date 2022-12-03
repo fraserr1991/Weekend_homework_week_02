@@ -1,34 +1,35 @@
 class Room:
     def __init__(self, room_number):
         self.room_number = room_number
-        self.room_guest_list = []
-        self.room_in_use_by = {}
-        self.guest_in_room = False
-        self.song_list = []
+        self.rooms = [
+            {"Room Number" : 1, "Guests in room" : 0, "Song list" : [], "Room guests" : []},
+            {"Room Number" : 2, "Guests in room" : 0, "Song list" : [], "Room guests" : []},
+            {"Room Number" : 3, "Guests in room" : 0, "Song list" : [], "Room guests" : []},
+            {"Room Number" : 4, "Guests in room" : 0, "Song list" : [], "Room guests" : []}
+        ]
 
     def add_song(self, song):
-        self.song_list.append(song)
-        return self.song_list
+        for room in self.rooms:
+            if room["Room Number"] == self.room_number:
+                room["Song list"].append(song)
+                return room["Song list"]
 
     def check_in_guest(self, guest):
-        if self.guest_in_room == False:
-            self.room_guest_list.append(guest)
-            self.guest_in_room = True
-            # print(self.room_guest_list)
-            return self.room_guest_list
-        else:
-            print(f"Room {self.room_number} already in use by {self.room_guest_list}")
-            return False
+        for room in self.rooms:
+            if room["Room Number"] == self.room_number:
+                    if room["Guests in room"] < 4:
+                        room["Guests in room"] += 1
+                        room["Room guests"].append(guest)
+                        return room["Room guests"]
+                    else:
+                        print(f"Sorry room {self.room_number} is full, please choose another")
+                        return False
 
-    def check_out_guest(self):
-        self.room_guest_list = []
-        self.guest_in_room = False
-        return self.room_guest_list
-
-    def room_info(self):
-        self.room_in_use_by["Room"] = self.room_number
-        self.room_in_use_by["Name"] = self.room_guest_list
-        return self.room_in_use_by
-
-    # def check_in_guest(self):
-    #     print(self.room.append("Bob"))
+    def check_out_guest(self, guest_name):
+        for room in self.rooms:
+            if room["Room Number"] == self.room_number:
+                for guest in room["Room guests"]:
+                    if guest == guest_name:
+                        room["Guests in room"] -= 1
+                        room["Room guests"].remove(guest_name)
+                        return room["Room guests"]
