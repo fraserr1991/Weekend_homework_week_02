@@ -12,6 +12,12 @@ class TestRoom(unittest.TestCase):
         self.instance_of_song_2 = Song("Anti-Hero", "Taylor Swift")
 
         self.instance_of_song_list = [self.instance_of_song.name_of_song, self.instance_of_song_2.name_of_song]
+        
+        self.drink_1 = Drink("Mocha", 2.50)
+        self.drink_2 = Drink("Latte", 2.90)
+        self.drink_3 = Drink("Flat White", 3.00)
+
+        drinks_list = [self.drink_1, self.drink_2, self.drink_3]
 
         self.instance_of_guest_1 = Guest("Bob", 40, 100, "Unholy")
         self.instance_of_guest_2 = Guest("George", 50, 50, "Unholy")
@@ -19,14 +25,10 @@ class TestRoom(unittest.TestCase):
         self.instance_of_guest_4 = Guest("Victoria", 60, 10000, "Unholy")
         self.instance_of_guest_5 = Guest("Lewis", 22, 100, "Unholy")
 
-        self.instance_of_room_1 = Room(1, 10, 4)
-        self.instance_of_room_2 = Room(2, 10, 5)
-        self.instance_of_room_3 = Room(3, 50, 2)
-        self.instane_of_room_4 = Room(4, 10, 5)
-
-        self.drink_1 = Drink("Mocha", 2.50)
-        self.drink_2 = Drink("Latte", 2.90)
-        self.drink_3 = Drink("Flat White", 3.00)
+        self.instance_of_room_1 = Room(1, 10, 4, drinks_list)
+        self.instance_of_room_2 = Room(2, 10, 5, drinks_list)
+        self.instance_of_room_3 = Room(3, 50, 2, drinks_list)
+        self.instane_of_room_4 = Room(4, 10, 5, drinks_list)
 
 
     def test_room_has_number(self):
@@ -82,6 +84,12 @@ class TestRoom(unittest.TestCase):
         self.instance_of_room_1.add_song(self.instance_of_song.name_of_song)
         cheer = self.instance_of_room_1.guests_favourite_song_is_on(self.instance_of_guest_1.favourite_song)
         self.assertEqual("Whooooo!", cheer)
+
+    def test_increase_till(self):
+        drink_name = self.instance_of_room_1.find_drink("Mocha")
+        self.instance_of_room_1.add_drink_to_tab(drink_name.price)
+        self.instance_of_room_1.add_drink_to_tab(drink_name.price)
+        self.assertEqual(5.0, self.instance_of_room_1.bar_tab)
 
     # def test_fee_taken(self):
     #     self.instance_of_room_1.check_in_guest(self.instance_of_guest_1.name)

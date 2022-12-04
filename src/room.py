@@ -1,7 +1,7 @@
 from src.guest import Guest
 
 class Room:
-    def __init__(self, room_number, room_fee, capacity):
+    def __init__(self, room_number, room_fee, capacity, drinks_list):
         self.room_number = room_number
         self.room_guest_list = []
         self.guests_in_room = 0
@@ -11,6 +11,8 @@ class Room:
         self.bar_tab = 0
         self.total_charge = 0
         self.total_fee = 0
+        self.drinks_list = drinks_list
+
 
     def add_song(self, song):
         self.song_list.append(song)
@@ -40,6 +42,11 @@ class Room:
         for song in self.song_list:
             if song == favourite_song:
                 return "Whooooo!"
+
+    def find_drink(self, drink_name):
+        for name_of_drink in self.drinks_list:
+            if name_of_drink.name == drink_name:
+                return name_of_drink
     
-    # def guest_bought_drink(self, amount):
-    #     self.bar_tab += amount
+    def add_drink_to_tab(self, amount):
+        self.bar_tab += amount
