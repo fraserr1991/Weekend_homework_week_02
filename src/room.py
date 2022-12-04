@@ -1,48 +1,35 @@
 from src.guest import Guest
 
 class Room:
-    def __init__(self, room_number):
+    def __init__(self, room_number, room_fee, capacity):
         self.room_number = room_number
-        self.rooms = [
-            {"Room Number" : 1, "Guests in room" : 0, "Song list" : [], "Room guests" : [], "Room fee" : 10, "Room fee count" : 0},
-            {"Room Number" : 2, "Guests in room" : 0, "Song list" : [], "Room guests" : [], "Room fee" : 10, "Room fee count" : 0},
-            {"Room Number" : 3, "Guests in room" : 0, "Song list" : [], "Room guests" : [], "Room fee" : 50, "Room fee count" : 0},
-            {"Room Number" : 4, "Guests in room" : 0, "Song list" : [], "Room guests" : [], "Room fee" : 10, "Room fee count" : 0}
-        ]
-        self.till = 1000
+        self.room_guest_list = []
+        self.guests_in_room = 0
+        self.song_list = []
+        self.room_capacity = capacity
+        self.room_fee = room_fee
+        self.total_fee = 0
 
     def add_song(self, song):
-        for room in self.rooms:
-            if room["Room Number"] == self.room_number:
-                room["Song list"].append(song)
-                return room["Song list"]
+        self.song_list.append(song)
+        print(self.song_list)
+        return self.song_list
 
     def check_in_guest(self, guest):
-        for room in self.rooms:
-            if room["Room Number"] == self.room_number:
-                    if room["Guests in room"] < 4:
-                        room["Guests in room"] += 1
-                        room["Room guests"].append(guest)
-                        room["Room fee count"] += room["Room fee"]
-                        # print(guest.wallet)
-                        # print(till)
-                        print(room)
-                        return room["Room guests"]
-                    else:
-                        print(f"Sorry room {self.room_number} is full, please choose another")
-                        return False
+        if self.guests_in_room < self.room_capacity:
+            self.room_guest_list.append(guest)
+            self.guests_in_room += 1 
+            self.total_fee += self.room_fee
+            print(f"Room number: {self.room_number}, Total collected fee's: {self.total_fee}, Guests in room: {self.guests_in_room}, Room guest list: {self.room_guest_list}")
+            return self.room_guest_list
+        else:
+            print(f"Sorry room {self.room_number} is full")
+            return False
 
     def check_out_guest(self, guest_name):
-        for room in self.rooms:
-            if room["Room Number"] == self.room_number:
-                for guest in room["Room guests"]:
-                    if guest == guest_name:
-                        room["Guests in room"] -= 1
-                        room["Room guests"].remove(guest_name)
-                        return room["Room guests"]
-    
-    def add_money_to_till(self):
-        for room in self.rooms:
-            self.till += room["Room fee count"]
-        print(self.till)
-        return self.till
+        for guest in self.room_guest_list:
+            if guest == guest_name:
+                self.guests_in_room -= 1
+                self.room_guest_list.remove(guest_name)
+                print(self.room_guest_list)
+                return self.room_guest_list
