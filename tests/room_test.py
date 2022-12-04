@@ -3,6 +3,7 @@ import unittest
 from src.room import Room
 from src.song import Song
 from src.guest import Guest
+from src.drink import Drink
 
 class TestRoom(unittest.TestCase):
 
@@ -12,16 +13,20 @@ class TestRoom(unittest.TestCase):
 
         self.instance_of_song_list = [self.instance_of_song.name_of_song, self.instance_of_song_2.name_of_song]
 
-        self.instance_of_guest_1 = Guest("Bob", 40, 100)
-        self.instance_of_guest_2 = Guest("George", 50, 50)
-        self.instance_of_guest_3 = Guest("Claire", 14, 200)
-        self.instance_of_guest_4 = Guest("Victoria", 60, 10000)
-        self.instance_of_guest_5 = Guest("Lewis", 22, 100)
+        self.instance_of_guest_1 = Guest("Bob", 40, 100, "Unholy")
+        self.instance_of_guest_2 = Guest("George", 50, 50, "Unholy")
+        self.instance_of_guest_3 = Guest("Claire", 14, 200, "Unholy")
+        self.instance_of_guest_4 = Guest("Victoria", 60, 10000, "Unholy")
+        self.instance_of_guest_5 = Guest("Lewis", 22, 100, "Unholy")
 
         self.instance_of_room_1 = Room(1, 10, 4)
         self.instance_of_room_2 = Room(2, 10, 5)
         self.instance_of_room_3 = Room(3, 50, 2)
         self.instane_of_room_4 = Room(4, 10, 5)
+
+        self.drink_1 = Drink("Mocha", 2.50)
+        self.drink_2 = Drink("Latte", 2.90)
+        self.drink_3 = Drink("Flat White", 3.00)
 
 
     def test_room_has_number(self):
@@ -69,11 +74,20 @@ class TestRoom(unittest.TestCase):
         cant_check_in_guest_5 = self.instance_of_room_1.check_in_guest(self.instance_of_guest_5.name)
         self.assertEqual(False, cant_check_in_guest_5)
 
-    def test_fee_taken(self):
-        self.instance_of_room_1.check_in_guest(self.instance_of_guest_1.name)
-        self.instance_of_room_2.check_in_guest(self.instance_of_guest_2.name)
-        self.instance_of_room_2.check_in_guest(self.instance_of_guest_3.name)
-        self.instance_of_room_3.check_in_guest(self.instance_of_guest_5.name)
-        fee_taken = self.instance_of_room_3.check_in_guest(self.instance_of_guest_4.name)
-        self.assertEqual(1130, fee_taken)
+    def test_guest_pays_fee(self):
+        self.instance_of_guest_1.pay_entry_fee_from_wallet(self.instance_of_room_1.room_fee)
+        self.assertEqual(90, self.instance_of_guest_1.wallet)
+
+    def test_if_favourite_song_is_on(self):
+        self.instance_of_room_1.add_song(self.instance_of_song.name_of_song)
+        cheer = self.instance_of_room_1.guests_favourite_song_is_on(self.instance_of_guest_1.favourite_song)
+        self.assertEqual("Whooooo!", cheer)
+
+    # def test_fee_taken(self):
+    #     self.instance_of_room_1.check_in_guest(self.instance_of_guest_1.name)
+    #     self.instance_of_room_2.check_in_guest(self.instance_of_guest_2.name)
+    #     self.instance_of_room_2.check_in_guest(self.instance_of_guest_3.name)
+    #     self.instance_of_room_3.check_in_guest(self.instance_of_guest_5.name)
+    #     fee_taken = self.instance_of_room_3.check_in_guest(self.instance_of_guest_4.room_fee)
+    #     self.assertEqual(1130, fee_taken)
         
